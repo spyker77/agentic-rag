@@ -1,3 +1,20 @@
+"""
+Advanced RAG System with HNSW Vector Search
+
+This module implements a production-grade RAG system using FAISS HNSW indexing for
+efficient similarity search. It handles document chunking, embedding, and retrieval
+with a focus on performance and result quality.
+
+Key features:
+- Document chunking with configurable overlap
+- HNSW indexing for faster approximate nearest neighbor search
+- Asynchronous processing for better throughput
+- Metadata preservation throughout the retrieval pipeline
+- Score thresholding to filter low-quality matches
+
+Designed for applications requiring high-quality retrieval from large document collections.
+"""
+
 import asyncio
 import logging
 from dataclasses import dataclass

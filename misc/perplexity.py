@@ -1,3 +1,20 @@
+"""
+Real-Time Search System with Dynamic Index Management
+
+This module implements a search system inspired by Perplexity's approach, with dynamic
+index management that refreshes for each query. It uses OpenAI embeddings and GPT-4o
+for response generation.
+
+Key features:
+- Dynamic indexing of search results
+- Automatic index clearing after each query
+- Asynchronous embedding generation and search
+- Quality filtering based on similarity scores
+- Structured response format with source tracking
+
+Ideal for applications where search results change frequently and freshness is critical.
+"""
+
 import asyncio
 import logging
 from dataclasses import dataclass

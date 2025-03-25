@@ -1,3 +1,20 @@
+"""
+High-Performance LLM Serving with Advanced Optimizations
+
+This module implements a production-ready LLM serving system with multiple optimization
+techniques including:
+- Request batching and prioritization queue
+- Two-level caching (exact Redis + semantic FAISS)
+- Streaming token generation
+- Request timeouts and error handling
+- FastAPI endpoints with proper resource lifecycle management
+
+The system is designed for high-throughput, low-latency LLM inference with efficient
+resource utilization through batching, caching, and asynchronous processing.
+
+Suitable for production deployments requiring optimal performance and cost efficiency.
+"""
+
 import asyncio
 import logging
 import time

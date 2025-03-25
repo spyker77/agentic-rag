@@ -1,3 +1,20 @@
+"""
+Diverse Verifier Tree Search (DVTS) Implementation
+
+This module implements a Monte Carlo Tree Search variant that uses a local LLM (Llama)
+for generating candidate solutions and a remote verifier (GPT-4o-mini) for evaluating them.
+The algorithm explores diverse solution paths and selects the highest quality response
+through iterative search and verification.
+
+Key components:
+- TreeSearchNode: Represents states in the search space
+- DiverseVerifierTreeSearch: Implements the core DVTS algorithm with selection,
+  expansion, simulation, and backpropagation phases
+- Batch processing for efficient verification
+
+Use this for complex reasoning tasks where solution quality matters more than speed.
+"""
+
 import asyncio
 from dataclasses import dataclass
 
