@@ -1,0 +1,9 @@
+{
+    "dependencies": ["."],
+    "graphs": {
+      "resume_agent": {
+        "path": "src.resume_agent"
+      }
+    }
+  }
+  
