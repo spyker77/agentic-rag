@@ -94,7 +94,6 @@ python -m src.resume_agent.main
 ├── src/                  # Source code
 │   └── resume_agent/     # Structured LangGraph agent implementation
 ├── demos/                # Demos with different frameworks
-└── README.md             # This file
 ```
 
 ## Disclaimer

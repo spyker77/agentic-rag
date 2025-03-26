@@ -1,14 +1,11 @@
-from typing import Annotated, TypedDict
+from typing import Annotated
 
-from langchain_core.messages import BaseMessage
-from langgraph.graph import END, StateGraph, add_messages
-from langgraph.managed import RemainingSteps
+from langgraph.graph import END, MessagesState, StateGraph
 from langgraph.prebuilt import create_react_agent
 
 
-class AgentState(TypedDict):
-    messages: Annotated[list[BaseMessage], add_messages]
-    remaining_steps: Annotated[int, RemainingSteps]
+class AgentState(MessagesState):
+    remaining_steps: Annotated[int, lambda current, _: current - 1]
 
 
 def create_agent_workflow(llm, tools):
@@ -17,10 +14,6 @@ def create_agent_workflow(llm, tools):
     workflow = StateGraph(AgentState)
     workflow.add_node("agent", agent)
     workflow.set_entry_point("agent")
-    workflow.add_conditional_edges(
-        "agent",
-        lambda state: state["remaining_steps"] > 1 and "Final Answer:" not in state["messages"][-1].content,
-        {True: "agent", False: END},
-    )
+    workflow.add_conditional_edges("agent", lambda state: "agent" if state["remaining_steps"] > 0 else END)
 
     return workflow.compile()
