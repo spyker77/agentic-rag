@@ -50,6 +50,7 @@ A more structured implementation of a LangGraph-based agent designed to answer q
 ### Prerequisites
 
 - Python 3.12+
+- uv
 - Local LLM server (Ollama recommended)
 
 ### Installation
