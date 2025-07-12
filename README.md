@@ -69,6 +69,10 @@ uv sync
 ```bash
 python -m demos.crewai
 
+python -m demos.autogen
+
+python -m demos.haystack
+
 python -m demos.langchain
 
 python -m demos.langgraph
