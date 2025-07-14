@@ -50,6 +50,41 @@ A production-style, modular LangGraph implementation designed to demonstrate a s
 - **Tool Integration**: Custom tools for document search and information extraction.
 - **Conversation Memory**: Persistent conversation history and context tracking.
 
+### Evaluating the RAG System
+
+To ensure the RAG system is both accurate and reliable, this project includes a comprehensive evaluation script based on the [Ragas](https://github.com/explodinggradients/ragas) framework. This script automates the process of testing the RAG chain, providing quantitative metrics to guide development and tuning.
+
+The evaluation script performs the following steps:
+
+1. Loads a document.
+2. Splits the document into chunks.
+3. Generates a synthetic test set of question/ground-truth answer pairs from the document chunks.
+4. Executes the RAG chain against each test question to get an answer and the retrieved context.
+5. Compares the generated answers and context against the ground truth using a suite of metrics.
+
+#### How to Run the Evaluation
+
+To run the evaluation, execute the following command from the root of the project:
+
+```bash
+python -m misc.evaluation
+```
+
+#### Interpreting the Metrics
+
+The evaluation produces a report with the following key metrics, each scored from 0 to 1 (higher is better):
+
+- **`context_precision`**: Measures the signal-to-noise ratio of the retrieved context. A high score means the retrieved context is highly relevant to the question.
+  - *Low Score Indicates*: The retriever is pulling in irrelevant information, which can confuse the LLM. Try tuning the chunking strategy or improving the embedding model.
+- **`context_recall`**: Measures whether all necessary information to answer the question was retrieved. This is a critical metric.
+  - *Low Score Indicates*: The retriever is failing to find all the relevant context. The LLM cannot answer correctly if it doesn't have the information. This is often the first metric to fix.
+- **`faithfulness`**: Measures how factually consistent the answer is with the retrieved context. It helps identify hallucinations.
+  - *Low Score Indicates*: The LLM is making things up or using its internal knowledge instead of the provided context. Try improving the prompt to be more restrictive or use a different model.
+- **`answer_relevancy`**: Measures how relevant the answer is to the *question*. An answer can be faithful to the context but not actually answer the user's query.
+  - *Low Score Indicates*: The answer is off-topic. This can be due to poor context precision or a prompt that doesn't properly guide the LLM.
+- **`answer_correctness`**: The overall score that measures the accuracy of the answer against the ground truth.
+  - *Low Score Indicates*: The system is failing. Use the other four metrics to diagnose whether the problem lies in **retrieval** (`context_recall`) or **generation** (`faithfulness`).
+
 ## Getting Started
 
 ### Prerequisites
@@ -121,6 +156,7 @@ python -m src.resume_agent.main
 │   └── haystack.py       # Two-stage retrieval system
 ├── misc/                 # Advanced techniques and optimizations
 │   ├── dvts.py           # Diverse Verifier Tree Search
+│   ├── evaluation.py     # RAG evaluation with Ragas
 │   ├── optimizations.py  # High-performance LLM serving
 │   ├── perplexity.py     # Real-time search system
 │   └── rag.py            # Production-grade RAG with HNSW
