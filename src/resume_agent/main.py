@@ -162,9 +162,8 @@ def test_routing_comparison():
     demo = create_demo_app()
 
     # Import routing functions.
-    from langchain_huggingface import HuggingFaceEmbeddings
 
-    from src.resume_agent.config import EMBEDDINGS_MODEL
+    from src.resume_agent.config import EMBEDDINGS
     from src.resume_agent.tools import (
         create_embedding_based_router,
         create_routing_chain,
@@ -172,12 +171,10 @@ def test_routing_comparison():
         create_vector_store_router,
     )
 
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL)
-
     # Create different routers.
-    simple_router = create_simple_embedding_router(embeddings)
-    vector_store_router = create_vector_store_router(embeddings, demo["vector_store"])
-    basic_router = create_embedding_based_router(embeddings)
+    simple_router = create_simple_embedding_router(EMBEDDINGS)
+    vector_store_router = create_vector_store_router(EMBEDDINGS, demo["vector_store"])
+    basic_router = create_embedding_based_router(EMBEDDINGS)
     llm_router = create_routing_chain(demo["llm"])
 
     test_questions = [

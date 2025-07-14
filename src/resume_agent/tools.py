@@ -209,19 +209,13 @@ def create_memory_chain(llm):
     return memory_prompt | llm | StrOutputParser()
 
 
-def create_enhanced_toolset(llm, rag_chain, vector_store=None, documents=None, routing_approach="simple"):
+def create_enhanced_toolset(llm, embeddings, rag_chain, vector_store=None, documents=None, routing_approach="simple"):
     """Create the complete enhanced toolset with clean, maintainable routing."""
     tools = [
         create_document_search_tool(rag_chain),
         create_general_knowledge_tool(llm),
         create_resume_tool(rag_chain),
     ]
-
-    from langchain_huggingface import HuggingFaceEmbeddings
-
-    from .config import EMBEDDINGS_MODEL
-
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL)
 
     if routing_approach == "simple":
         # Simple embedding approach - clean and maintainable.

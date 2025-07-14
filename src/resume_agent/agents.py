@@ -168,7 +168,7 @@ def create_enhanced_workflow(llm, tools, routing_chain):
     workflow.set_entry_point("classify")
 
     workflow.add_conditional_edges("classify", _route_by_status, {"agent": "agent", "error": "error", "end": END})
-    workflow.add_conditional_edges("agent", _route_by_status, {"error": "error", "end": END})
-    workflow.add_conditional_edges("error", _route_by_status, {"classify": "classify", "end": END})
+    workflow.add_conditional_edges("agent", _route_by_status, {"agent": "agent", "error": "error", "end": END})
+    workflow.add_conditional_edges("error", _route_by_status, {"classify": "classify", "agent": "agent", "end": END})
 
     return workflow.compile()
