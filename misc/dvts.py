@@ -2,7 +2,7 @@
 Diverse Verifier Tree Search (DVTS) Implementation
 
 This module implements a Monte Carlo Tree Search variant that uses a local LLM (Llama)
-for generating candidate solutions and a remote verifier (GPT-4o-mini) for evaluating them.
+for generating candidate solutions and a remote verifier for evaluating them.
 The algorithm explores diverse solution paths and selects the highest quality response
 through iterative search and verification.
 
@@ -47,7 +47,7 @@ class DiverseVerifierTreeSearch:
     async def verify_solution(self, solution: str) -> float:
         try:
             response = await self.verifier.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-4.1-mini",
                 messages=[
                     {
                         "role": "system",

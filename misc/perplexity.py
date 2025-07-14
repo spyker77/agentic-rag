@@ -2,8 +2,7 @@
 Real-Time Search System with Dynamic Index Management
 
 This module implements a search system inspired by Perplexity's approach, with dynamic
-index management that refreshes for each query. It uses OpenAI embeddings and GPT-4o
-for response generation.
+index management that refreshes for each query.
 
 Key features:
 - Dynamic indexing of search results
@@ -38,7 +37,7 @@ class SearchResult:
 class RealTimeSearchSystem:
     def __init__(self, openai_api_key: str, dimension: int = 1536):
         self.embeddings = OpenAIEmbeddings(api_key=openai_api_key, model="text-embedding-3-small")
-        self.llm = OpenAI(api_key=openai_api_key, model="gpt-4o", temperature=0.3)
+        self.llm = OpenAI(api_key=openai_api_key, model="gpt-4.1-mini", temperature=0.3)
         self.index = faiss.IndexFlatIP(dimension)
         self.texts: list[str] = []
         self.metadata: list[dict] = []

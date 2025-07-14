@@ -59,7 +59,7 @@ class RAGSystem:
         self.dimension = self.encoder.get_sentence_embedding_dimension()
 
         # LLM
-        self.llm = OpenAI(api_key=openai_api_key, model="gpt-4o", temperature=0.3)
+        self.llm = OpenAI(api_key=openai_api_key, model="gpt-4.1-mini", temperature=0.3)
 
         # Initialize HNSW index for better performance
         self.index = faiss.IndexHNSWFlat(self.dimension, M=16)
