@@ -64,15 +64,21 @@ The evaluation script performs the following steps:
 
 #### How to Run the Evaluation
 
-To run the evaluation, execute the following command from the root of the project:
+To run the evaluation with `ragas`, execute the following command from the root of the project:
 
 ```bash
-python -m misc.evaluation
+python -m misc.evaluations.ragas
+```
+
+To run the evaluation with `deepeval`, run the following command:
+
+```bash
+deepeval test run misc/evaluations/test_deepeval.py
 ```
 
 #### Interpreting the Metrics
 
-The evaluation produces a report with the following key metrics, each scored from 0 to 1 (higher is better):
+The `ragas` evaluation produces a report with the following key metrics, each scored from 0 to 1 (higher is better):
 
 - **`context_precision`**: Measures the signal-to-noise ratio of the retrieved context. A high score means the retrieved context is highly relevant to the question.
   - *Low Score Indicates*: The retriever is pulling in irrelevant information, which can confuse the LLM. Try tuning the chunking strategy or improving the embedding model.
@@ -84,6 +90,16 @@ The evaluation produces a report with the following key metrics, each scored fro
   - *Low Score Indicates*: The answer is off-topic. This can be due to poor context precision or a prompt that doesn't properly guide the LLM.
 - **`answer_correctness`**: The overall score that measures the accuracy of the answer against the ground truth.
   - *Low Score Indicates*: The system is failing. Use the other four metrics to diagnose whether the problem lies in **retrieval** (`context_recall`) or **generation** (`faithfulness`).
+
+The `deepeval` implementation uses a **pytest-based test suite** that evaluates the RAG system across multiple scenarios with two core metrics:
+
+- **`AnswerRelevancyMetric`**: Measures how well the answer addresses the specific question asked.
+- **`FaithfulnessMetric`**: Measures how factually consistent the answer is with the retrieved context.
+
+**DeepEval vs Ragas:**
+
+- **DeepEval**: Uses LLM-as-a-judge for evaluation, pytest-based testing framework, focuses on conversational scenarios and comprehensive test coverage
+- **Ragas**: Uses both LLM-based and statistical metrics, supports local LLMs, specializes in RAG-specific evaluation with 5 comprehensive metrics
 
 ## Getting Started
 
@@ -145,29 +161,31 @@ python -m src.resume_agent.main
 
 ```bash
 .
-├── data/                 # Sample data including resume
-├── demos/                # Framework comparison demonstrations
-│   ├── langchain.py      # Chain composition and routing with LCEL
-│   ├── langgraph.py      # Graph-based agent workflows
-│   ├── llamaindex_*.py   # Document indexing and agents
-│   ├── crewai.py         # Multi-agent collaboration
-│   ├── smolagents.py     # Lightweight tool framework
-│   ├── autogen.py        # Code execution agents
-│   └── haystack.py       # Two-stage retrieval system
-├── misc/                 # Advanced techniques and optimizations
-│   ├── dvts.py           # Diverse Verifier Tree Search
-│   ├── evaluation.py     # RAG evaluation with Ragas
-│   ├── optimizations.py  # High-performance LLM serving
-│   ├── perplexity.py     # Real-time search system
-│   └── rag.py            # Production-grade RAG with HNSW
-├── src/                  # Structured agent implementations
-│   └── resume_agent/     # Production-style, modular agent implementation
-│       ├── agents.py     # Agent definitions and workflows
-│       ├── chains.py     # RAG and processing chains
-│       ├── tools.py      # Custom tools and utilities
-│       └── main.py       # Entrypoint for the agent application
-├── pyproject.toml        # Dependencies and configuration
-└── README.md             # This file
+├── data/                       # Sample data including resume
+├── demos/                      # Framework comparison demonstrations
+│   ├── langchain.py            # Chain composition and routing with LCEL
+│   ├── langgraph.py            # Graph-based agent workflows
+│   ├── llamaindex_*.py         # Document indexing and agents
+│   ├── crewai.py               # Multi-agent collaboration
+│   ├── smolagents.py           # Lightweight tool framework
+│   ├── autogen.py              # Code execution agents
+│   └── haystack.py             # Two-stage retrieval system
+├── misc/                       # Advanced techniques and optimizations
+│   └── evaluations/            # Evaluation frameworks
+│       ├── ragas.py            # RAG evaluation with Ragas
+│       └── test_deepeval.py    # Pytest-based evaluation with DeepEval
+│   ├── dvts.py                 # Diverse Verifier Tree Search
+│   ├── optimizations.py        # High-performance LLM serving
+│   ├── perplexity.py           # Real-time search system
+│   └── rag.py                  # Production-grade RAG with HNSW
+├── src/                        # Structured agent implementations
+│   └── resume_agent/           # Production-style, modular agent implementation
+│       ├── agents.py           # Agent definitions and workflows
+│       ├── chains.py           # RAG and processing chains
+│       ├── tools.py            # Custom tools and utilities
+│       └── main.py             # Entrypoint for the agent application
+├── pyproject.toml              # Dependencies and configuration
+└── README.md                   # This file
 ```
 
 ## Disclaimer
