@@ -13,7 +13,7 @@ EMBEDDINGS_MODEL = "intfloat/e5-large-v2"
 
 
 embeddings = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL)
-llm = LiteLLMModel(model_id="ollama_chat/gemma3:27b", api_base="http://localhost:11434")
+llm = LiteLLMModel(model_id="ollama_chat/llama3.3:70b", api_base="http://localhost:11434")
 
 documents = DirectoryLoader("data/").load()
 texts = RecursiveCharacterTextSplitter().split_documents(documents)
