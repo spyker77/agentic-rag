@@ -108,6 +108,14 @@ The `deepeval` implementation uses a **pytest-based test suite** that evaluates 
 - Python 3.12+
 - uv (for dependency management)
 - Local LLM server (Ollama recommended)
+
+  ```bash
+  ollama pull llama3.1:8b
+  ollama pull llama3.3:70b
+  ollama pull gemma3:27b
+  ```
+
+- `OPENROUTER_API_KEY` (or `OPENAI_API_KEY` with changes)
 - Docker (for AutoGen code execution demos)
 
 ### Installation
@@ -119,11 +127,6 @@ cd agentic-rag
 
 # Install dependencies
 uv sync
-
-# Set up environment variables (optional)
-# Create .env file with API keys for external services:
-# OPENAI_API_KEY=your_openai_key
-# OPENROUTER_API_KEY=your_openrouter_key
 ```
 
 ### Running Demos
