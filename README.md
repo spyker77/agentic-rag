@@ -112,6 +112,7 @@ The `deepeval` implementation uses a **pytest-based test suite** that evaluates 
   ```bash
   ollama pull llama3.1:8b
   ollama pull llama3.3:70b
+  ollama pull devstral:24b
   ollama pull gemma3:27b
   ```
 

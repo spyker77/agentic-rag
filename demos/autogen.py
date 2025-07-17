@@ -3,10 +3,36 @@ import asyncio
 from autogen_agentchat.agents import AssistantAgent, CodeExecutorAgent
 from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.ui import Console
+from autogen_core.models import ModelFamily, ModelInfo
 from autogen_ext.code_executors.docker import DockerCommandLineCodeExecutor
 from autogen_ext.models.ollama import OllamaChatCompletionClient
 
-model_client = OllamaChatCompletionClient(model="llama3.1:8b")
+model_client = OllamaChatCompletionClient(
+    model="devstral:24b",
+    model_info=ModelInfo(
+        vision=False,
+        function_calling=True,
+        json_output=True,
+        family=ModelFamily.UNKNOWN,
+        structured_output=True,
+    ),
+)
+
+
+docker_executor = DockerCommandLineCodeExecutor(image="python:3.12", work_dir="./coding", bind_dir="./coding")
+
+code_executor = CodeExecutorAgent(
+    name="CodeExecutor",
+    code_executor=docker_executor,
+    model_client=model_client,
+    system_message="""You execute code and provide feedback on the results.
+    
+    When executing code:
+    1. Run the code safely in a container
+    2. Report any errors clearly
+    3. Show the actual output
+    4. Suggest fixes if needed""",
+)
 
 developer = AssistantAgent(
     name="Developer",
@@ -20,21 +46,6 @@ developer = AssistantAgent(
     4. Write code that produces clear output
     
     Focus on creating working solutions.""",
-)
-
-docker_executor = DockerCommandLineCodeExecutor(image="python:3.12", work_dir="coding")
-
-code_executor = CodeExecutorAgent(
-    name="CodeExecutor",
-    code_executor=docker_executor,
-    model_client=model_client,
-    system_message="""You execute code and provide feedback on the results.
-    
-    When executing code:
-    1. Run the code safely in a container
-    2. Report any errors clearly
-    3. Show the actual output
-    4. Suggest fixes if needed""",
 )
 
 code_reviewer = AssistantAgent(
@@ -54,15 +65,10 @@ code_reviewer = AssistantAgent(
 async def demonstrate_real_code_execution():
     """Show how agents collaborate with actual code execution"""
 
-    print("=" * 80)
     print("🚀 AutoGen Multi-Agent Team with REAL Code Execution")
     print("👥 Team: Developer, CodeExecutor, Code Reviewer")
-    print("=" * 80)
 
-    team = RoundRobinGroupChat(
-        participants=[developer, code_executor, code_reviewer],
-        max_turns=10,
-    )
+    team = RoundRobinGroupChat(participants=[developer, code_reviewer, code_executor], max_turns=10)
 
     task = """
     Create a Python script that:
@@ -71,13 +77,10 @@ async def demonstrate_real_code_execution():
     3. Plots the data points and regression line
     4. Calculates and displays the R² score
     5. Saves the plot as 'regression_analysis.png'
+    6. Print confirmation that the file was saved
     
     Make sure the code actually runs and produces real results!
     """
-
-    print(f"📋 Task: {task}")
-    print("\n🔄 Team Collaboration with Real Execution:")
-    print("-" * 80)
 
     await docker_executor.start()
 
