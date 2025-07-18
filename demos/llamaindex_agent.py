@@ -11,7 +11,7 @@ EMBEDDINGS_MODEL = "intfloat/e5-large-v2"
 
 
 Settings.embed_model = HuggingFaceEmbedding(model_name=EMBEDDINGS_MODEL)
-Settings.llm = Ollama(model="llama3.1:8b")
+Settings.llm = Ollama(model="llama3.3:70b")
 
 documents = SimpleDirectoryReader("data/").load_data()
 index = VectorStoreIndex.from_documents(documents)

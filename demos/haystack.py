@@ -19,7 +19,7 @@ EMBEDDINGS_MODEL = "intfloat/e5-large-v2"
 RERANKER_MODEL = "BAAI/bge-reranker-base"
 
 
-llm = OllamaChatGenerator(model="llama3.1:8b", timeout=60)
+llm = OllamaChatGenerator(model="llama3.3:70b")
 
 
 document_store = InMemoryDocumentStore()

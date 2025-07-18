@@ -17,7 +17,7 @@ EMBEDDINGS_MODEL = "intfloat/e5-large-v2"
 
 
 embeddings = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL)
-llm = ChatOllama(model="llama3.1:8b", temperature=0)
+llm = ChatOllama(model="llama3.3:70b", temperature=0)
 
 direct_prompt = ChatPromptTemplate.from_messages(
     [
