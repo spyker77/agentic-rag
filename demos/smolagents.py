@@ -13,7 +13,7 @@ EMBEDDINGS_MODEL = "intfloat/e5-large-v2"
 
 
 embeddings = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL)
-llm = LiteLLMModel(model_id="ollama_chat/llama3.3:70b", api_base="http://localhost:11434")
+llm = LiteLLMModel(model_id="ollama_chat/devstral:24b", api_base="http://localhost:11434")
 
 documents = DirectoryLoader("data/").load()
 texts = RecursiveCharacterTextSplitter().split_documents(documents)
@@ -31,7 +31,7 @@ def vector_search_tool(query: str) -> str:
     Returns:
         Relevant document snippets
     """
-    docs = vector_store.similarity_search(query, k=3)
+    docs = vector_store.similarity_search(query, k=5)
     return "\n".join(f"Document {i + 1}: {doc.page_content}" for i, doc in enumerate(docs))
 
 
