@@ -10,60 +10,48 @@ The code is intentionally experimental in nature, showcasing different implement
 
 ## Frameworks Explored
 
-- **LangChain**: The most mature and comprehensive ecosystem for building LLM applications. Its core strength is LangChain Expression Language (LCEL), which allows for composing chains from modular components, making it ideal for complex, multi-step workflows.
-- **LangGraph**: An extension of LangChain for building stateful, agentic systems. It represents workflows as graphs, enabling cycles and conditional routing, which is perfect for creating complex agent behaviors that require state persistence and error recovery.
-- **LlamaIndex**: A data-centric framework specializing in document indexing and retrieval for RAG. It offers advanced and highly customizable query engines, making it the go-to choice for document-heavy applications that need sophisticated retrieval strategies.
-- **SmolAgents**: A minimalist and lightweight framework designed for creating simple, understandable agents. It excels at custom tool creation and real-time code execution, making it ideal for data analysis and visualization tasks where simplicity is key.
-- **AutoGen**: A framework from Microsoft for building applications with multiple, conversing agents. It excels at code generation and execution in sandboxed environments (like Docker) and facilitates complex workflows through automated agent chats and human feedback loops.
-- **CrewAI**: A framework designed for orchestrating role-playing, autonomous AI agents. It focuses on creating collaborative agent teams where each agent has a specific role, tools, and tasks, enabling them to work together to solve complex problems.
-- **Haystack**: A production-ready, modular framework for building sophisticated search systems. It provides a component-based architecture for creating pipelines that can include hybrid search, re-ranking, and other advanced retrieval techniques, making it an industry standard for enterprise RAG.
-- **Pydantic AI**: A Python agent framework built by the Pydantic team that emphasizes type safety, structured responses, and production-grade reliability. It brings FastAPI-like developer experience to AI agent development with built-in validation, automatic retry logic, and seamless integration with multiple model providers.
+- **LangChain**: A comprehensive ecosystem for building LLM applications with a focus on composable chains (LCEL).
+- **LangGraph**: An extension of LangChain for building stateful, agentic systems using graph-based workflows.
+- **LlamaIndex**: A data-centric framework specializing in advanced document indexing and retrieval for RAG.
+- **SmolAgents**: A minimalist framework for creating simple, understandable agents with a focus on custom tools and code execution.
+- **AutoGen**: A Microsoft framework for building multi-agent systems that excel at code generation in sandboxed environments.
+- **CrewAI**: A framework for orchestrating role-playing, autonomous AI agents in collaborative teams.
+- **Haystack**: A modular, production-ready framework for building sophisticated search and retrieval pipelines.
+- **Pydantic AI**: A type-safe agent framework with a focus on structured, validated responses and production reliability.
 
 ## Key Components
 
 ### Agent Architectures
 
-- **Single-Agent Systems**: Tool-enabled agents with document retrieval capabilities.
-- **Multi-Agent Collaboration**: Specialized agents with role-based coordination (CrewAI).
-- **Graph-Based Workflows**: Stateful agent processes with conditional routing and error recovery (LangGraph).
-- **Code-Executing Agents**: Docker-containerized agents for safe code execution and testing (AutoGen).
+- **Single-Agent Systems**: Basic tool-enabled agents with RAG.
+- **Multi-Agent Collaboration**: Role-based agent teams (e.g., CrewAI).
+- **Graph-Based Workflows**: Stateful, cyclic agent processes (e.g., LangGraph).
+- **Code-Executing Agents**: Sandboxed code execution for safety (e.g., AutoGen).
 
 ### RAG Implementations
 
-- **Basic RAG**: Implemented with LangChain LCEL syntax and LlamaIndex query engines.
-- **Advanced RAG**: Production-grade system with HNSW vector indexing (misc/rag.py).
-- **Two-stage Retrieval**: Hybrid search with semantic + keyword retrieval and re-ranking (Haystack).
-- **Document Processing**: Chunking strategies, embedding generation, and vector store management.
+- **Basic RAG**: Simple retrieval with LangChain and LlamaIndex.
+- **Advanced RAG**: Production-grade retrieval with HNSW vector indexing.
+- **Two-stage Retrieval**: Hybrid search (semantic + keyword) with re-ranking.
+- **Document Processing**: Chunking, embeddings, and vector store management.
 
 ### Advanced Techniques
 
-- **`misc/dvts.py`**: Diverse Verifier Tree Search using Monte Carlo methods for complex reasoning tasks with local LLM generation and remote verification.
-- **`misc/optimizations.py`**: High-performance LLM serving with request batching, two-level caching (Redis + semantic FAISS), and FastAPI endpoints.
-- **`misc/perplexity.py`**: Real-time search system with dynamic index management and automatic cleanup after queries.
+- **`misc/dvts.py`**: Diverse Verifier Tree Search for complex reasoning.
+- **`misc/optimizations.py`**: High-performance LLM serving with batching and caching.
+- **`misc/perplexity.py`**: Real-time search with dynamic index management.
 
 ### Resume Agent
 
-A production-style, modular LangGraph implementation designed to demonstrate a structured approach for building robust agents. Unlike the single-file demos, it separates concerns into distinct modules:
-
-- **Graph Workflow**: Multi-node processing with conditional routing and state management.
-- **RAG Integration**: Document retrieval with context-aware question answering.
-- **Error Handling**: Robust error recovery with retry mechanisms and fallback strategies.
-- **Tool Integration**: Custom tools for document search and information extraction.
-- **Conversation Memory**: Persistent conversation history and context tracking.
+A production-style, modular agent built with LangGraph to demonstrate a structured, robust implementation. It features a multi-node graph workflow, RAG integration, error handling, custom tools, and conversation memory.
 
 ### Evaluating the RAG System
 
-To ensure the RAG system is both accurate and reliable, this project includes a comprehensive evaluation script based on the [Ragas](https://github.com/explodinggradients/ragas) framework. This script automates the process of testing the RAG chain, providing quantitative metrics to guide development and tuning.
+This project includes evaluation scripts for [Ragas](https://github.com/explodinggradients/ragas) and [DeepEval](https://github.com/confident-ai/deepeval) to measure the performance of the RAG system. These frameworks provide quantitative metrics to guide development and tuning.
 
-The evaluation script performs the following steps:
+The scripts automatically generate a synthetic test set from a document, run the RAG chain, and evaluate the results based on metrics like context precision/recall, faithfulness, and answer relevancy.
 
-1. Loads a document.
-2. Splits the document into chunks.
-3. Generates a synthetic test set of question/ground-truth answer pairs from the document chunks.
-4. Executes the RAG chain against each test question to get an answer and the retrieved context.
-5. Compares the generated answers and context against the ground truth using a suite of metrics.
-
-#### How to Run the Evaluation
+#### How to Run Evaluations
 
 To run the evaluation with `ragas`, execute the following command from the root of the project:
 
@@ -77,30 +65,7 @@ To run the evaluation with `deepeval`, run the following command:
 deepeval test run misc/evaluations/test_deepeval.py
 ```
 
-#### Interpreting the Metrics
-
-The `ragas` evaluation produces a report with the following key metrics, each scored from 0 to 1 (higher is better):
-
-- **`context_precision`**: Measures the signal-to-noise ratio of the retrieved context. A high score means the retrieved context is highly relevant to the question.
-  - *Low Score Indicates*: The retriever is pulling in irrelevant information, which can confuse the LLM. Try tuning the chunking strategy or improving the embedding model.
-- **`context_recall`**: Measures whether all necessary information to answer the question was retrieved. This is a critical metric.
-  - *Low Score Indicates*: The retriever is failing to find all the relevant context. The LLM cannot answer correctly if it doesn't have the information. This is often the first metric to fix.
-- **`faithfulness`**: Measures how factually consistent the answer is with the retrieved context. It helps identify hallucinations.
-  - *Low Score Indicates*: The LLM is making things up or using its internal knowledge instead of the provided context. Try improving the prompt to be more restrictive or use a different model.
-- **`answer_relevancy`**: Measures how relevant the answer is to the *question*. An answer can be faithful to the context but not actually answer the user's query.
-  - *Low Score Indicates*: The answer is off-topic. This can be due to poor context precision or a prompt that doesn't properly guide the LLM.
-- **`answer_correctness`**: The overall score that measures the accuracy of the answer against the ground truth.
-  - *Low Score Indicates*: The system is failing. Use the other four metrics to diagnose whether the problem lies in **retrieval** (`context_recall`) or **generation** (`faithfulness`).
-
-The `deepeval` implementation uses a **pytest-based test suite** that evaluates the RAG system across multiple scenarios with two core metrics:
-
-- **`AnswerRelevancyMetric`**: Measures how well the answer addresses the specific question asked.
-- **`FaithfulnessMetric`**: Measures how factually consistent the answer is with the retrieved context.
-
-**DeepEval vs Ragas:**
-
-- **DeepEval**: Uses LLM-as-a-judge for evaluation, pytest-based testing framework, focuses on conversational scenarios and comprehensive test coverage
-- **Ragas**: Uses both LLM-based and statistical metrics, supports local LLMs, specializes in RAG-specific evaluation with 5 comprehensive metrics
+For detailed explanations of the metrics, please refer to the official documentation for [Ragas](https://docs.ragas.io/en/latest/concepts/metrics/index.html) and [DeepEval](https://docs.confident-ai.com/docs/metrics-introduction).
 
 ## Getting Started
 
