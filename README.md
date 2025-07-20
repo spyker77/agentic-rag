@@ -17,6 +17,7 @@ The code is intentionally experimental in nature, showcasing different implement
 - **AutoGen**: A framework from Microsoft for building applications with multiple, conversing agents. It excels at code generation and execution in sandboxed environments (like Docker) and facilitates complex workflows through automated agent chats and human feedback loops.
 - **CrewAI**: A framework designed for orchestrating role-playing, autonomous AI agents. It focuses on creating collaborative agent teams where each agent has a specific role, tools, and tasks, enabling them to work together to solve complex problems.
 - **Haystack**: A production-ready, modular framework for building sophisticated search systems. It provides a component-based architecture for creating pipelines that can include hybrid search, re-ranking, and other advanced retrieval techniques, making it an industry standard for enterprise RAG.
+- **Pydantic AI**: A Python agent framework built by the Pydantic team that emphasizes type safety, structured responses, and production-grade reliability. It brings FastAPI-like developer experience to AI agent development with built-in validation, automatic retry logic, and seamless integration with multiple model providers.
 
 ## Key Components
 
@@ -156,6 +157,9 @@ python -m demos.crewai
 # Haystack: Two-stage retrieval
 python -m demos.haystack
 
+# Pydantic AI: Type-safe agents with structured responses
+python -m demos.pydantic_ai
+
 # Resume Agent: Structured, production-style agent
 python -m src.resume_agent.main
 ```
@@ -172,7 +176,8 @@ python -m src.resume_agent.main
 │   ├── crewai.py               # Multi-agent collaboration
 │   ├── smolagents.py           # Lightweight tool framework
 │   ├── autogen.py              # Code execution agents
-│   └── haystack.py             # Two-stage retrieval system
+│   ├── haystack.py             # Two-stage retrieval system
+│   └── pydantic_ai.py          # Type-safe agents with structured responses
 ├── misc/                       # Advanced techniques and optimizations
 │   └── evaluations/            # Evaluation frameworks
 │       ├── ragas.py            # RAG evaluation with Ragas

@@ -37,6 +37,7 @@ dependencies = [
     "deepeval>=3.2.6",
     "vllm>=0.6.0",
     "opencv-python-headless>=4.11.0.86",
+    "pydantic-ai>=0.4.4",
 ]
 
 [dependency-groups]
@@ -48,14 +49,14 @@ target-version = "py312"
 
 [tool.ruff.lint]
 extend-select = [
-    "Q",        # flake8 quotes
-    "I",        # isort
-    "C90",      # {name} is too complex
-    "RUF100",   # unused noqa (auto-fixable)
-    "T20",      # print found
+    "Q",      # flake8 quotes
+    "I",      # isort
+    "C90",    # {name} is too complex
+    "RUF100", # unused noqa (auto-fixable)
+    "T20",    # print found
 ]
 ignore = [
-    "F821",     # undefined name
+    "F821",   # undefined name
 ]
 
 [tool.ruff.lint.per-file-ignores]
